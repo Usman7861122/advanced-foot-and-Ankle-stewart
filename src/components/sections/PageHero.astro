@@ -1,0 +1,56 @@
+---
+interface Props { title: string; eyebrow?: string; lede?: string; image?: string; imageAlt?: string; position?: string }
+const { title, eyebrow, lede, image, imageAlt = '', position = 'center' } = Astro.props;
+const alt = imageAlt || `${title} care at Advanced Foot & Ankle Specialists`;
+
+// Gold italic for the city part of the title
+const m = title.match(/^(.*?)(\s+in Chandler, AZ)$/);
+const main = m ? m[1] : title;
+const place = m ? m[2].trim() : '';
+
+// Breadcrumb from the URL
+const segs = Astro.url.pathname.split('/').filter(Boolean);
+const names: Record<string, string> = { about: 'About', services: 'Services', conditions: 'Conditions', blog: 'Blog', contact: 'Contact', press: 'News', providers: 'Providers' };
+const crumbs = [{ label: 'Home', href: '/' }, ...segs.map((s, i) => ({
+  label: i === segs.length - 1 ? main : (names[s] ?? s),
+  href: i === segs.length - 1 ? undefined : '/' + segs.slice(0, i + 1).join('/'),
+}))];
+// Nearby area line, shown on service and condition pages
+const showAreas = segs.length === 2 && (segs[0] === 'services' || segs[0] === 'conditions');
+const ld = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.label })),
+};
+---
+<section class="relative isolate overflow-hidden bg-navy-950 px-6 pb-20 pt-40 text-white lg:px-10 lg:pb-28 lg:pt-52">
+  {image && <img src={image} alt={alt} class="absolute inset-0 -z-20 h-full w-full object-cover" style={`object-position:${position}`} onerror="this.style.display='none'" />}
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-navy-950/95 via-navy-950/75 to-navy-950/40"></div>
+  <div class="mx-auto max-w-[1400px]">
+    {crumbs.length > 1 && (
+      <nav aria-label="Breadcrumb" class="mb-8">
+        <ol class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.25em] text-white/60">
+          {crumbs.map((c, i) => (
+            <li class="flex items-center gap-3">
+              {i > 0 && <span aria-hidden="true" class="h-px w-4 bg-gold/60"></span>}
+              {c.href
+                ? <a href={c.href} class="transition-colors hover:text-gold">{c.label}</a>
+                : <span aria-current="page" class="text-gold">{c.label}</span>}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 class="mt-4 max-w-6xl text-[clamp(2.8rem,6vw,5.2rem)]">{main}{place && <> <em class="text-gold">{place}</em></>}</h1>
+    {lede && <p class="mt-6 max-w-2xl text-lg text-white/80">{lede}</p>}
+    {showAreas && (
+      <div class="mt-12 border-t border-white/15 pt-8">
+        <p class="flex items-start gap-4 text-white/65">
+          <svg class="mt-1 h-5 w-5 shrink-0 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          <span class="font-light leading-relaxed">Patients are welcome from across Chandler, Gilbert, Tempe, Mesa, Ahwatukee, Sun Lakes and the greater Phoenix East Valley.</span>
+        </p>
+      </div>
+    )}
+  </div>
+</section>

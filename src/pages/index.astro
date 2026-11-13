@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import About from '../components/home/About.astro';
+import Services from '../components/home/Services.astro';
+import WhyChoose from '../components/home/WhyChoose.astro';
+import Features from '../components/home/Features.astro';
+import ParallaxBand from '../components/home/ParallaxBand.astro';
+import Providers from '../components/home/Providers.astro';
+import TestimonialsSection from '../components/home/TestimonialsSection.astro';
+import Blog from '../components/home/Blog.astro';
+import Contact from '../components/home/Contact.astro';
+import { site, providers } from '../data/site';
+import { services } from '../data/services';
+
+const a = site.address;
+const dayMap: Record<string, string[]> = {
+  'Monday – Thursday': ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+  Friday: ['Friday'],
+};
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': ['MedicalClinic', 'LocalBusiness'],
+  '@id': `${site.url}/#clinic`,
+  name: site.clinic,
+  url: site.url,
+  image: `${site.url}/images/hero-1-runner.jpg`,
+  logo: `${site.url}/images/logo.webp`,
+  description: site.description,
+  telephone: '+1-480-963-9000',
+  faxNumber: '+1-480-963-0375',
+  medicalSpecialty: 'Podiatric',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: a.street,
+    addressLocality: a.city,
+    addressRegion: a.state,
+    postalCode: a.zip,
+    addressCountry: 'US',
+  },
+  areaServed: { '@type': 'City', name: 'Chandler, AZ' },
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: dayMap['Monday – Thursday'], opens: '08:00', closes: '17:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: dayMap.Friday, opens: '08:00', closes: '12:00' },
+  ],
+  availableService: services.slice(0, 12).map((s) => ({ '@type': 'MedicalProcedure', name: s.title })),
+  employee: providers.map((p) => ({
+    '@type': 'Physician',
+    name: p.name,
+    medicalSpecialty: 'Podiatric',
+    jobTitle: p.role,
+  })),
+};
+---
+<BaseLayout>
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} slot="head" />
+  <Hero />
+  <About />
+  <Services />
+  <WhyChoose />
+  <Features />
+  <ParallaxBand />
+  <Providers />
+  <TestimonialsSection />
+  <Blog limit={3} />
+  <Contact />
+</BaseLayout>

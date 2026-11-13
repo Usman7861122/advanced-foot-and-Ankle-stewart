@@ -1,0 +1,67 @@
+---
+import { site } from '../../data/site';
+import { services } from '../../data/services';
+const a = site.address;
+const year = new Date().getFullYear();
+---
+<footer class="bg-navy-950 pb-24 text-white md:pb-0">
+  <div class="border-b border-white/10 px-6 py-16 text-center lg:px-10">
+    <p class="font-serif text-[clamp(2rem,4vw,3.4rem)]">Take the next step toward <em class="text-gold">pain-free living.</em></p>
+    <div class="mt-8 flex flex-wrap justify-center gap-4">
+      <a href={site.bookingUrl} class="btn btn-book">Book Appointment</a>
+      <a href={site.phoneHref} class="btn btn-outline">Call {site.phone}</a>
+    </div>
+  </div>
+
+  <div class="mx-auto grid max-w-[1400px] gap-12 px-6 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:px-10">
+    <div>
+      <img src="/images/logo.webp" alt={site.clinic} width="768" height="309" class="h-20 w-auto brightness-0 invert" loading="lazy" />
+      <p class="mt-5 max-w-xs text-sm text-white/65">Board-certified podiatrists and surgeons caring for the feet and ankles of adults and children in Chandler, Arizona.</p>
+    </div>
+    <nav aria-label="Navigate">
+      <p class="eyebrow">Navigate</p>
+      <ul class="mt-5 space-y-2.5 text-sm text-white/80">
+        {site.nav.map((n) => <li><a href={n.href} class="link-line">{n.label}</a></li>)}
+      </ul>
+    </nav>
+    <nav aria-label="Services">
+      <p class="eyebrow">Services</p>
+      <ul class="mt-5 space-y-2.5 text-sm text-white/80">
+        {services.filter((s) => ['heel-pain', 'bunions', 'sports-injuries', 'diabetic-foot-care', 'custom-orthotics', 'mls-laser-therapy', 'pediatric-foot-care'].includes(s.slug)).map((s) => (
+          <li><a href={`/services/${s.slug}`} class="link-line">{s.title}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <div>
+      <p class="eyebrow">Visit</p>
+      <address class="mt-5 space-y-2 text-sm not-italic text-white/80">
+        <p>{a.street}<br />{a.city}, {a.state} {a.zip}</p>
+        <p><a href={site.phoneHref} class="link-line">{site.phone}</a><br /><span class="text-white/55">Fax {site.fax}</span></p>
+        <ul class="pt-2 text-white/65">
+          {site.hours.map((h) => <li>{h.day}: {h.time}</li>)}
+        </ul>
+      </address>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10 px-6 py-6 lg:px-10">
+    <div class="mx-auto flex max-w-[1400px] flex-col justify-between gap-3 text-xs text-white/50 sm:flex-row">
+      <p>© {year} {site.clinic}. All rights reserved.</p>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        <li><a href="/privacy" class="hover:text-gold">Privacy</a></li>
+        <li><a href="/notice-of-privacy-practices" class="hover:text-gold">HIPAA Notice</a></li>
+        <li><a href="/terms-conditions" class="hover:text-gold">Terms</a></li>
+        <li><a href="/medical-disclaimer" class="hover:text-gold">Medical Disclaimer</a></li>
+        <li><a href="/cookie-policy" class="hover:text-gold">Cookie Policy</a></li>
+        <li><a href="/accessibility" class="hover:text-gold">Accessibility</a></li>
+        <li><button type="button" data-cookie-settings class="hover:text-gold">Cookie settings</button></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<!-- Phone: sticky two-button action bar -->
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 border-t border-gold/40 bg-navy-950/95 backdrop-blur md:hidden">
+  <a href={site.phoneHref} class="flex min-h-[56px] items-center justify-center text-sm uppercase tracking-[0.16em] text-white">Call us</a>
+  <a href={site.bookingUrl} class="flex min-h-[56px] items-center justify-center bg-gold text-sm font-medium uppercase tracking-[0.16em] text-navy-950">Appointment</a>
+</div>

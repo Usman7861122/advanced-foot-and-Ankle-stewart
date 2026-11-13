@@ -1,0 +1,35 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Contact from '../../components/home/Contact.astro';
+import Button from '../../components/ui/Button.astro';
+import PlantarFasciitis from '../../components/services/PlantarFasciitis.astro';
+import TopicPage from '../../components/services/TopicPage.astro';
+import { conditions } from '../../data/conditions';
+import { topicFor } from '../../data/topics';
+
+export function getStaticPaths() {
+  return conditions.map((c) => ({ params: { slug: c.slug }, props: { c } }));
+}
+const { c } = Astro.props;
+const related = conditions.filter((x) => x.group === c.group && x.slug !== c.slug);
+const topic = c.slug === 'plantar-fasciitis' ? undefined : topicFor(c.slug);
+const hero =
+  c.slug === 'plantar-fasciitis' ? '/images/pf-insole.jpg'
+  : topic ? `/images/${topic.prefix}-${(topic.order ?? [1, 2, 3])[2]}.jpg`
+  : '/images/about-doctor.jpg';
+const relatedList = (related.length ? related : conditions.filter((x) => x.slug !== c.slug).slice(0, 3)).slice(0, 4).map((o) => ({ title: o.title, href: `/conditions/${o.slug}` }));
+---
+<PageLayout title={`${c.title} in Chandler, AZ`} eyebrow={c.group} lede={c.summary.length < 120 ? `${c.summary} We explain every option in plain words, with simple care first.` : c.summary} image={hero}>
+  {c.slug === 'plantar-fasciitis' && <PlantarFasciitis />}
+  {topic && <TopicPage topic={topic} related={relatedList} relatedLabel="Related conditions" />}
+  {!topic && c.slug !== 'plantar-fasciitis' && (
+    <section class="bg-ivory px-6 py-24 lg:px-10">
+      <div class="mx-auto max-w-2xl space-y-6 text-lg text-navy-900/80">
+        <h2 class="text-4xl text-navy-900">How we help</h2>
+        <p>We start with a careful exam to find the true cause of your symptoms, then explain your options in plain words.</p>
+        <div class="pt-4"><Button book variant="book-dark">Book Appointment</Button></div>
+      </div>
+    </section>
+  )}
+  <Contact />
+</PageLayout>

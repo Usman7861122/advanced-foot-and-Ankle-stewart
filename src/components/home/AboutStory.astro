@@ -1,0 +1,21 @@
+---
+import Reveal from '../islands/Reveal';
+import Button from '../ui/Button.astro';
+---
+<section class="bg-ivory px-6 py-24 lg:px-10 lg:py-36">
+  <div class="mx-auto grid max-w-[1400px] items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-24">
+    <Reveal client:visible>
+      <div class="relative">
+        <div class="absolute -bottom-5 -right-5 hidden h-full w-full border border-gold/60 sm:block" style="border-radius:3px"></div>
+        <img src="/images/about-story.jpg" alt="Bright, modern foot and ankle clinic room" loading="lazy" class="photo relative aspect-[4/3] w-full object-cover" />
+      </div>
+    </Reveal>
+    <Reveal client:visible>
+      <p class="eyebrow">Our story</p>
+      <h2 class="mt-5 text-[clamp(2.2rem,4.6vw,4rem)] text-navy-900">Caring for Chandler <em class="text-gold">since 1998.</em></h2>
+      <p class="mt-6 max-w-xl text-lg text-navy-900/75">Dr. Su opened our practice with one simple idea: treat every patient like family. More than twenty-five years later, that idea still guides every visit.</p>
+      <p class="mt-4 max-w-xl text-navy-900/70">Today Dr. Su and Dr. Stewart care for children, adults, athletes and seniors. We listen first, explain in plain words, and choose gentle care before surgery.</p>
+      <div class="mt-9"><Button book variant="book-dark">Book Appointment</Button></div>
+    </Reveal>
+  </div>
+</section>

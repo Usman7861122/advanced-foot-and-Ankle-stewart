@@ -1,0 +1,17 @@
+---
+import { site } from '../../data/site';
+interface Props {
+  href?: string;
+  variant?: 'book' | 'book-dark' | 'outline';
+  book?: boolean;
+  class?: string;
+}
+const { href, variant = 'outline', book = false, class: cls = '' } = Astro.props;
+const url = book ? site.bookingUrl : href;
+const variantClass = {
+  book: 'btn-book',
+  'book-dark': 'btn-book btn-book-dark',
+  outline: 'btn-outline',
+}[variant];
+---
+<a href={url} class={`btn ${variantClass} ${cls}`}><slot /></a>

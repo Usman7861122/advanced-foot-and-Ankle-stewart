@@ -1,0 +1,30 @@
+---
+import TestimonialCarousel from '../islands/TestimonialCarousel';
+import { testimonials } from '../../data/site';
+---
+<section id="testimonials" class="relative overflow-hidden bg-navy-900 text-white">
+  <div class="grid lg:min-h-[820px] lg:grid-cols-[1fr_1.05fr]">
+    <div class="relative min-h-[460px] lg:min-h-full">
+      <img
+        src="/images/testimonial-athlete.jpg"
+        alt="Smiling athlete in sportswear waving hello by a park lake"
+        width="1200"
+        height="1800"
+        loading="lazy"
+        class="absolute inset-0 h-full w-full object-cover object-[50%_25%]"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-navy-900"></div>
+      <div class="absolute bottom-8 left-8 right-8 hidden sm:block">
+        <p class="eyebrow">Back on their feet</p>
+        <p class="mt-2 font-serif text-3xl italic text-white">Happy feet, happy life.</p>
+      </div>
+    </div>
+    <div class="flex flex-col justify-center px-6 py-20 lg:px-16 lg:py-28">
+      <p class="eyebrow">Patient stories</p>
+      <h2 class="mt-5 text-[clamp(2.4rem,4.4vw,4rem)] leading-[1.1]">Kind words from <em class="text-gold">our patients.</em></h2>
+      <div class="mt-12">
+        <TestimonialCarousel client:visible items={testimonials} />
+      </div>
+    </div>
+  </div>
+</section>

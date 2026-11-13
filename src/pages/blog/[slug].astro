@@ -1,0 +1,51 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Button from '../../components/ui/Button.astro';
+import { posts } from '../../data/site';
+export function getStaticPaths() {
+  return posts.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props;
+const fmt = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const related = [...posts.filter((x) => x.category === p.category && x.slug !== p.slug), ...posts.filter((x) => x.category !== p.category && x.slug !== p.slug)].slice(0, 3);
+const ld = {
+  '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.title, datePublished: p.date,
+  author: { '@type': 'Person', name: p.author || 'Advanced Foot & Ankle Specialists of Arizona' },
+  publisher: { '@type': 'Organization', name: 'Advanced Foot & Ankle Specialists of Arizona' },
+};
+---
+<PageLayout title={p.title} eyebrow={p.category} lede={p.excerpt} image={p.img} description={p.excerpt}>
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <article class="bg-ivory px-6 py-20 lg:px-10 lg:py-28">
+    <div class="mx-auto max-w-3xl">
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-navy-900/15 pb-6 text-xs uppercase tracking-[0.2em] text-navy-900/60">
+        <span class="text-gold">{p.category}</span><span aria-hidden="true">·</span>
+        <time datetime={p.date}>{fmt(p.date)}</time><span aria-hidden="true">·</span>
+        <span>{p.readTime}</span>
+        {p.author && <><span aria-hidden="true">·</span><span>By {p.author}</span></>}
+      </div>
+      <div class="mt-8 text-lg leading-relaxed text-navy-900/80 [&_a]:text-gold [&_a]:underline [&_h2]:mt-12 [&_h2]:font-serif [&_h2]:text-3xl [&_h2]:text-navy-900 [&_h3]:mt-8 [&_h3]:font-serif [&_h3]:text-2xl [&_h3]:text-navy-900 [&_li]:mt-2 [&_ol]:mt-5 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mt-5 [&_strong]:text-navy-900 [&_ul]:mt-5 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:marker:text-gold" set:html={p.body.join('\n')} />
+      <div class="mt-14 border-t border-navy-900/15 pt-10">
+        <p class="font-serif text-3xl text-navy-900">Questions about your feet?</p>
+        <p class="mt-2 text-navy-900/70">Our team in Chandler is happy to help. This article is for general information and is not a substitute for a medical exam.</p>
+        <div class="mt-6 flex flex-wrap gap-4"><Button book variant="book-dark">Book Appointment</Button><Button href="/blog" variant="outline" class="text-navy-900">All articles</Button></div>
+      </div>
+    </div>
+  </article>
+  <section class="bg-navy-950 px-6 py-20 text-white lg:px-10">
+    <div class="mx-auto max-w-[1400px]">
+      <p class="eyebrow">Keep reading</p>
+      <ul class="mt-8 grid gap-8 md:grid-cols-3">
+        {related.map((r) => (
+          <li>
+            <a href={`/blog/${r.slug}`} class="group block">
+              <div class="photo aspect-[4/3] overflow-hidden"><img src={r.img} alt="" loading="lazy" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" /></div>
+              <p class="mt-4 text-xs uppercase tracking-[0.2em] text-gold">{r.category}</p>
+              <h3 class="mt-2 font-serif text-2xl transition-colors group-hover:text-gold">{r.title}</h3>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</PageLayout>

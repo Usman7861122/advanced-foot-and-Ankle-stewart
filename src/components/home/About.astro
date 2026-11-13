@@ -1,0 +1,124 @@
+---
+import Button from '../ui/Button.astro';
+import Reveal from '../islands/Reveal';
+const pillars = [
+  {
+    n: '01',
+    t: 'Never rushed',
+    d: 'Every visit is unhurried. We listen first, then explain.',
+    icon: '<circle cx="14" cy="14" r="10.5"/><path d="M14 7.5V14l4.2 2.6"/>',
+  },
+  {
+    n: '02',
+    t: 'Quick to see you',
+    d: 'Flexible scheduling, with same or next-day visits when we can.',
+    icon: '<rect x="4" y="6" width="20" height="18" rx="2"/><path d="M4 11.5h20M9.5 3.5v5M18.5 3.5v5M10 17l3 3 5-5.5"/>',
+  },
+  {
+    n: '03',
+    t: 'Advanced care in-house',
+    d: 'Modern diagnostics, MLS laser therapy and outpatient surgery.',
+    icon: '<path d="M14 3.5v21M3.5 14h21"/><circle cx="14" cy="14" r="10.5"/>',
+  },
+];
+---
+<section id="about" class="bg-ivory px-6 py-24 lg:px-10 lg:py-36">
+  <div class="mx-auto grid max-w-[1400px] items-center gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
+    <Reveal client:visible>
+      <div class="relative mx-auto w-full max-w-[560px]">
+        <div class="absolute -bottom-5 -right-5 h-full w-full rounded-[3px] border border-gold" aria-hidden="true"></div>
+        <div class="photo relative aspect-[4/5]">
+          <video
+            id="about-video"
+            class="absolute inset-0 h-full w-full object-cover"
+            src="/images/about-video.mp4"
+            poster="/images/about-video-poster.jpg"
+            width="864"
+            height="1080"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="Short film about Advanced Foot and Ankle Specialists: a foot exam, laser therapy and an athlete back on the trail"
+          ></video>
+          <div
+            id="about-caption"
+            class="pointer-events-none absolute bottom-5 left-5 max-w-[78%] border border-white/45 bg-navy-950/35 px-4 py-3 text-white opacity-0 backdrop-blur-[3px] transition-opacity duration-500"
+            aria-hidden="true"
+          >
+            <p id="about-caption-tag" class="text-[10px] uppercase tracking-[0.28em] text-gold"></p>
+            <p id="about-caption-text" class="mt-1 font-serif text-lg leading-snug"></p>
+          </div>
+        </div>
+      </div>
+    </Reveal>
+
+    <Reveal client:visible>
+      <div>
+        <p class="eyebrow">About the practice</p>
+        <h2 class="mt-5 text-[clamp(2.4rem,5vw,4.4rem)]">Care for every <em class="text-gold">step</em> you take.</h2>
+        <div class="hairline mt-8 w-24"></div>
+        <div class="mt-8 space-y-5 text-lg text-navy-900/80">
+          <p>Advanced Foot &amp; Ankle Specialists provides expert podiatry care for adults and children in Chandler and the surrounding Arizona communities. Our two board-certified podiatrists are also surgeons, and they plan your care together.</p>
+          <p>We combine modern diagnostic technology with a warm, integrative approach. You get pain management, diabetic foot care, wound care, custom orthotics and in-office MLS laser therapy. When surgery is the right answer, we offer minimally invasive outpatient options.</p>
+        </div>
+
+        <ul class="mt-10 grid gap-8 pt-2 sm:grid-cols-3 sm:gap-6">
+          {pillars.map((p) => (
+            <li class="group relative pt-6">
+              <span class="absolute left-0 top-0 h-px w-full bg-navy-900/15" aria-hidden="true"></span>
+              <span class="absolute left-0 top-0 h-px w-10 bg-gold transition-all duration-700 ease-out group-hover:w-full" aria-hidden="true"></span>
+              <div class="flex items-center justify-between">
+                <svg width="30" height="30" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" class="text-gold transition-transform duration-700 group-hover:-translate-y-0.5 group-hover:scale-110" aria-hidden="true" set:html={p.icon} />
+                <span class="font-serif text-lg italic tracking-wider text-navy-900/30 transition-colors duration-500 group-hover:text-gold" aria-hidden="true">{p.n}</span>
+              </div>
+              <p class="mt-4 font-serif text-2xl leading-tight">{p.t}</p>
+              <p class="mt-2 text-sm leading-relaxed text-navy-900/70">{p.d}</p>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-10 flex flex-wrap gap-4">
+          <Button href="/about" variant="outline" class="text-navy-900">Our story</Button>
+          <Button book variant="book-dark">Book Appointment</Button>
+        </div>
+      </div>
+    </Reveal>
+  </div>
+</section>
+
+<script>
+  const v = document.getElementById('about-video') as HTMLVideoElement | null;
+  if (v && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    v.removeAttribute('autoplay');
+    v.pause();
+  }
+
+  // Small caption on the video, bottom left. It follows the three scenes
+  // and hides on the branded end card.
+  const box = document.getElementById('about-caption');
+  const tag = document.getElementById('about-caption-tag');
+  const txt = document.getElementById('about-caption-text');
+  const scenes = [
+    { from: 0.3, to: 2.7, tag: '01 · Exam', text: 'Every visit starts with a careful look.' },
+    { from: 3.0, to: 5.4, tag: '02 · Treatment', text: 'Modern MLS laser therapy, right in our office.' },
+    { from: 5.7, to: 8.4, tag: '03 · Recovery', text: 'Back on your feet, doing what you love.' },
+  ];
+  let current = -1;
+  if (v && box && tag && txt) {
+    v.addEventListener('timeupdate', () => {
+      const t = v.currentTime;
+      const i = scenes.findIndex((s) => t >= s.from && t < s.to);
+      if (i === current) return;
+      current = i;
+      if (i === -1) {
+        box.style.opacity = '0';
+      } else {
+        tag.textContent = scenes[i].tag;
+        txt.textContent = scenes[i].text;
+        box.style.opacity = '1';
+      }
+    });
+  }
+</script>

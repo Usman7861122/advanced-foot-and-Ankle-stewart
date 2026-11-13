@@ -1,0 +1,52 @@
+---
+import Reveal from '../islands/Reveal';
+import Button from '../ui/Button.astro';
+---
+<section id="treatments" aria-label="Featured treatments">
+  <!-- Swift Therapy -->
+  <div class="grid bg-navy-900 text-white lg:grid-cols-2">
+    <div class="photo !rounded-none relative min-h-[380px] lg:min-h-[620px]">
+      <img src="/images/feature-swift.jpg" alt="Runner's feet pushing off a sunlit rocky trail" loading="lazy" width="1600" height="1197" class="absolute inset-0 h-full w-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent to-navy-900/30"></div>
+    </div>
+    <div class="flex items-center px-6 py-16 lg:px-20 lg:py-24">
+      <Reveal client:visible>
+        <div class="max-w-xl">
+          <p class="eyebrow">New treatment</p>
+          <h2 class="mt-5 text-[clamp(2.2rem,4vw,3.6rem)] leading-[1.1]">Introducing Swift Therapy <em class="text-gold">for plantar warts.</em></h2>
+          <p class="mt-7 text-lg leading-relaxed text-white/80">We are proud to offer a new and more effective way to treat plantar warts and help stop them from coming back.</p>
+          <p class="mt-4 leading-relaxed text-white/70">Swift Therapy helps your own immune system fight the warts. That means better care today and fewer problems in the future.</p>
+          <div class="mt-9 flex flex-wrap gap-4">
+            <Button book>Book Appointment</Button>
+            <Button href="/blog/swift-therapy-for-plantar-warts">Read more</Button>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </div>
+
+  <!-- MLS Laser -->
+  <div class="grid bg-ivory lg:grid-cols-2">
+    <div class="order-2 flex items-center px-6 py-16 lg:order-1 lg:px-20 lg:py-24">
+      <Reveal client:visible>
+        <div class="max-w-xl">
+          <p class="eyebrow">Laser care</p>
+          <h2 class="mt-5 text-[clamp(2.2rem,4vw,3.6rem)] leading-[1.1]">MLS Laser Therapy <em class="text-gold">for foot and ankle pain.</em></h2>
+          <p class="mt-7 text-lg leading-relaxed text-navy-900/75">You come in with foot pain or a fungal infection. We guide gentle beams of light over the area, and you start to feel better. It sounds like science fiction, but medical lasers have improved a lot in recent years.</p>
+          <p class="mt-4 text-navy-900/75">At Advanced Foot &amp; Ankle Specialists of Arizona, we use laser care in two main ways:</p>
+          <ul class="mt-5 space-y-3 text-navy-900">
+            <li class="flex gap-3"><span aria-hidden="true" class="mt-1 text-gold">✔</span><span><strong>MLS laser therapy</strong> for pain, inflammation, swelling and other foot and ankle injuries.</span></li>
+            <li class="flex gap-3"><span aria-hidden="true" class="mt-1 text-gold">✔</span><span><strong>Laser therapy</strong> to clear toenail fungus.</span></li>
+          </ul>
+          <div class="mt-9 flex flex-wrap gap-4">
+            <Button book variant="book-dark">Book Appointment</Button>
+            <Button href="/blog/mls-laser-therapy-for-foot-and-ankle-pain" class="!text-navy-900 !border-navy-900/40">Read more</Button>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+    <div class="photo !rounded-none relative order-1 min-h-[380px] lg:order-2 lg:min-h-[620px]">
+      <img src="/images/feature-mls.jpg" alt="Trail runner climbing an old stone path on a mountain" loading="lazy" width="1600" height="1067" class="absolute inset-0 h-full w-full object-cover" />
+    </div>
+  </div>
+</section>

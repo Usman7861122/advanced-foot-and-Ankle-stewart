@@ -1,0 +1,20 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+interface Props { title: string; lede: string; updated?: string; description?: string }
+const { title, lede, updated = 'November 13, 2026', description } = Astro.props;
+---
+<PageLayout title={title} eyebrow="Legal" lede={lede} description={description} image="/images/heel-pain-exam.jpg">
+  <section class="bg-ivory px-6 py-20 lg:px-10 lg:py-28">
+    <div class="mx-auto max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-navy-900/55">Last updated: {updated}</p>
+      <div class="mt-8 text-lg leading-relaxed text-navy-900/80 [&_a]:text-gold [&_a]:underline [&_h2]:mt-12 [&_h2]:font-serif [&_h2]:text-3xl [&_h2]:text-navy-900 [&_h3]:mt-8 [&_h3]:font-serif [&_h3]:text-2xl [&_h3]:text-navy-900 [&_li]:mt-2 [&_p]:mt-4 [&_strong]:text-navy-900 [&_table]:mt-6 [&_table]:w-full [&_table]:text-left [&_table]:text-base [&_td]:border-t [&_td]:border-navy-900/15 [&_td]:py-3 [&_td]:pr-4 [&_td]:align-top [&_th]:pb-2 [&_th]:pr-4 [&_th]:text-xs [&_th]:uppercase [&_th]:tracking-[0.15em] [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:marker:text-gold">
+        <slot />
+      </div>
+      <div class="mt-14 border-t border-navy-900/15 pt-8 text-base text-navy-900/70">
+        <p class="font-serif text-2xl text-navy-900">Questions?</p>
+        <p class="mt-2">Call <a href="tel:+14809639000">480-963-9000</a> or visit us at 595 N Dobson Road, Suite D71, Chandler, AZ 85224.</p>
+        <p class="mt-6 text-sm text-navy-900/55">Related: <a href="/privacy">Privacy Policy</a> · <a href="/cookie-policy">Cookie Policy</a> · <a href="/notice-of-privacy-practices">Notice of Privacy Practices</a> · <a href="/terms-conditions">Terms &amp; Conditions</a> · <a href="/medical-disclaimer">Medical Disclaimer</a> · <a href="/accessibility">Accessibility</a></p>
+      </div>
+    </div>
+  </section>
+</PageLayout>

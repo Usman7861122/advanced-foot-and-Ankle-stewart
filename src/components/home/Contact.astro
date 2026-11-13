@@ -1,0 +1,71 @@
+---
+import HoursToday from '../ui/HoursToday.astro';
+import { site } from '../../data/site';
+import { services } from '../../data/services';
+const a = site.address;
+const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${a.street}, ${a.city}, ${a.state} ${a.zip}`)}`;
+const embed = `https://www.google.com/maps?q=${encodeURIComponent(`${a.street}, ${a.city}, ${a.state} ${a.zip}`)}&z=15&output=embed`;
+const field = 'w-full rounded-[3px] border border-white/25 bg-transparent px-4 py-3.5 text-white placeholder:text-white/40 focus:border-gold focus:outline-none';
+---
+<section id="contact" class="bg-navy-950 px-6 py-24 text-white lg:px-10 lg:py-36">
+  <div class="mx-auto grid max-w-[1400px] gap-16 lg:grid-cols-2 lg:gap-24">
+    <div>
+      <p class="eyebrow">Get in touch</p>
+      <h2 class="mt-5 text-[clamp(2.4rem,5vw,4.4rem)]">Ready to feel <em class="text-gold">better?</em></h2>
+      <p class="mt-6 max-w-md text-lg text-white/70">Tell us what is bothering your feet or ankles. We will call you to find a time that works.</p>
+
+      <dl class="mt-12 grid gap-8 sm:grid-cols-2">
+        <div>
+          <dt class="eyebrow">Visit</dt>
+          <dd class="mt-3 text-white/85">{a.street}<br />{a.city}, {a.state} {a.zip}</dd>
+          <a href={mapUrl} target="_blank" rel="noopener noreferrer" class="link-line mt-3 inline-block text-xs uppercase tracking-[0.2em] text-gold">Get directions →</a>
+        </div>
+        <div>
+          <dt class="eyebrow">Call</dt>
+          <dd class="mt-3"><a href={site.phoneHref} class="font-serif text-3xl hover:text-gold transition-colors">{site.phone}</a></dd>
+          <dd class="mt-1 text-sm text-white/60">Fax {site.fax}</dd>
+        </div>
+        <div class="sm:col-span-2">
+          <dt class="eyebrow">Hours</dt>
+          <dd class="mt-3 divide-y divide-white/10 border-y border-white/10">
+            {site.hours.map((h) => (
+              <div class="flex justify-between py-2.5 text-white/85" data-days={h.days.join(',')}><span>{h.day}</span><span class="text-white/60">{h.time}</span></div>
+            ))}
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <form id="appointment" action={site.contactApi || undefined} method="post" class="space-y-5 scroll-mt-32">
+      <h3 class="font-serif text-3xl">Request an appointment</h3>
+      <div class="grid gap-5 sm:grid-cols-2">
+        <label class="block"><span class="mb-2 block text-xs uppercase tracking-[0.2em] text-white/70">Full name</span><input class={field} type="text" name="name" autocomplete="name" required /></label>
+        <label class="block"><span class="mb-2 block text-xs uppercase tracking-[0.2em] text-white/70">Phone</span><input class={field} type="tel" name="phone" autocomplete="tel" required /></label>
+      </div>
+      <label class="block"><span class="mb-2 block text-xs uppercase tracking-[0.2em] text-white/70">Email</span><input class={field} type="email" name="email" autocomplete="email" required /></label>
+      <label class="block">
+        <span class="mb-2 block text-xs uppercase tracking-[0.2em] text-white/70">I am interested in</span>
+        <select class={`${field} bg-navy-950`} name="interest">
+          <option value="">Choose a service</option>
+          {services.map((s) => <option value={s.slug}>{s.title}</option>)}
+          <option value="other">Something else</option>
+        </select>
+      </label>
+      <label class="block"><span class="mb-2 block text-xs uppercase tracking-[0.2em] text-white/70">Message</span><textarea class={field} name="message" rows="4"></textarea></label>
+      <button type="submit" class="btn btn-book w-full sm:w-auto">Request Appointment</button>
+      <p class="text-xs text-white/50">Please do not include private medical details. For urgent problems, call us.</p>
+    </form>
+
+    <div class="photo relative h-[360px] border border-white/15 lg:col-span-2 lg:h-[440px]">
+      <iframe
+        title={`Map to ${site.clinic}, ${a.street}, ${a.city}`}
+        src={embed}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        class="h-full w-full border-0 [filter:grayscale(.85)_contrast(1.05)_brightness(.92)] transition duration-700 hover:[filter:none]"
+      ></iframe>
+      <a href={mapUrl} target="_blank" rel="noopener noreferrer" class="btn btn-outline absolute bottom-4 left-4 !min-h-[44px] !bg-navy-950/90 !text-[12px]">Open in Google Maps →</a>
+    </div>
+  </div>
+</section>
+<HoursToday />

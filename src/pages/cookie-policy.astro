@@ -1,0 +1,27 @@
+---
+import LegalPage from '../components/ui/LegalPage.astro';
+---
+<LegalPage title="Cookie Policy" lede="Cookies are small files saved on your device. This page shows which kinds we use and how you can control them.">
+  <h2>Your choices</h2>
+  <p>When you first visit, you can accept all, reject non-essential cookies, or customize. You can change your choice at any time.</p>
+  <p><button type="button" data-cookie-settings class="btn btn-outline !border-navy-900/40 px-5 py-3 text-xs uppercase tracking-[0.16em] !text-navy-900">Open cookie settings</button></p>
+
+  <h2>Types of cookies</h2>
+  <table>
+    <thead><tr><th>Type</th><th>What it does</th><th>Can you turn it off?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Necessary</strong></td><td>Keeps the site working and remembers your cookie choice.</td><td>No. The site needs them.</td></tr>
+      <tr><td><strong>Analytics</strong></td><td>Counts visits and shows which pages are used, so we can improve the site.</td><td>Yes. Off unless you accept.</td></tr>
+      <tr><td><strong>Marketing</strong></td><td>Helps measure and show our ads to people who may need foot care.</td><td>Yes. Off unless you accept.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>What we store</h2>
+  <p>Your choice is saved in your browser as <strong>afas-consent</strong> so we do not ask on every visit. Analytics and marketing tools load only after you allow them.</p>
+
+  <h2>Other ways to control cookies</h2>
+  <p>Most browsers let you block or delete cookies in their settings. If you block all cookies, some parts of the site may not work as expected.</p>
+
+  <h2>More information</h2>
+  <p>See our <a href="/privacy">Privacy Policy</a>, or call <a href="tel:+14809639000">480-963-9000</a>.</p>
+</LegalPage>

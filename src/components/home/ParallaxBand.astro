@@ -1,0 +1,23 @@
+---
+import Button from '../ui/Button.astro';
+---
+<section aria-label="Move with confidence" class="parallax-band relative flex h-screen min-h-[560px] items-end justify-center text-white">
+  <div class="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-navy-950/15 to-navy-950/25" aria-hidden="true"></div>
+  <div class="relative px-6 pb-14 text-center sm:pb-20">
+    <p class="eyebrow">Move with confidence</p>
+    <p class="mt-3 font-serif text-[clamp(1.6rem,3vw,2.4rem)] italic">Every step counts. Let us keep yours pain free.</p>
+    <div class="mt-6 flex justify-center"><Button book class="!min-h-[44px] !text-[12px]">Book Appointment</Button></div>
+  </div>
+</section>
+
+<style>
+  .parallax-band {
+    background-image: url('/images/parallax-runner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  @media (hover: none), (max-width: 1023px) {
+    .parallax-band { background-attachment: scroll; }
+  }
+</style>

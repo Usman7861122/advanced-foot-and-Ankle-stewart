@@ -1,0 +1,56 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Contact from '../../components/home/Contact.astro';
+import Button from '../../components/ui/Button.astro';
+import HeelPain from '../../components/services/HeelPain.astro';
+import PlantarFasciitis from '../../components/services/PlantarFasciitis.astro';
+import TopicPage from '../../components/services/TopicPage.astro';
+import { services } from '../../data/services';
+import { topics } from '../../data/topics';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const others = services.filter((x) => x.group === s.group && x.slug !== s.slug).slice(0, 4);
+const topic = topics[s.slug];
+const custom = s.slug === 'heel-pain' || s.slug === 'plantar-fasciitis';
+const hero =
+  s.slug === 'heel-pain' ? '/images/heel-pain-exam.jpg'
+  : s.slug === 'plantar-fasciitis' ? '/images/pf-insole.jpg'
+  : topic ? `/images/${topic.prefix}-${(topic.order ?? [1, 2, 3])[2]}.jpg`
+  : '/images/about-doctor.jpg';
+const steps = [
+  { t: 'A careful exam', d: 'We listen to your story, look closely at your feet and ankles, and use in-office technology when it helps.' },
+  { t: 'A clear plan', d: 'You hear what we found, in plain words, with every option explained, simple care first.' },
+  { t: 'Support to recovery', d: 'We follow up, adjust the plan and help you stay active and pain-free.' },
+];
+---
+<PageLayout title={`${s.title} in Chandler, AZ`} eyebrow={s.group} lede={s.summary.length < 120 ? `${s.summary} We explain every option in plain words, with simple care first.` : s.summary} image={hero}>
+  {s.slug === 'heel-pain' && <HeelPain />}
+  {s.slug === 'plantar-fasciitis' && <PlantarFasciitis />}
+  {topic && <TopicPage topic={topic} related={others.map((o) => ({ title: o.title, href: `/services/${o.slug}` }))} />}
+  {!custom && !topic && (
+    <section class="bg-ivory px-6 py-24 lg:px-10">
+      <div class="mx-auto grid max-w-[1400px] gap-16 lg:grid-cols-[1.2fr_0.8fr]">
+        <div>
+          <h2 class="text-4xl">What to expect</h2>
+          <ol class="mt-10 divide-y divide-navy-900/15 border-y border-navy-900/15">
+            {steps.map((x, i) => (
+              <li class="grid grid-cols-[auto_1fr] gap-6 py-7">
+                <span class="font-serif text-4xl text-gold">0{i + 1}</span>
+                <div><h3 class="text-2xl">{x.t}</h3><p class="mt-2 text-navy-900/75">{x.d}</p></div>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <aside class="self-start bg-navy-900 p-9 text-white">
+          <p class="eyebrow">Book a visit</p>
+          <p class="mt-3 font-serif text-3xl">Ready for relief?</p>
+          <div class="mt-6"><Button book variant="book">Book Appointment</Button></div>
+        </aside>
+      </div>
+    </section>
+  )}
+  <Contact />
+</PageLayout>

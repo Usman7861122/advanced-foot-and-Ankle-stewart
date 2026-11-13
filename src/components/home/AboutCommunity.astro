@@ -1,0 +1,20 @@
+---
+import Reveal from '../islands/Reveal';
+import Button from '../ui/Button.astro';
+const events = ['PGA Tour Valero Texas Open', 'Phoenix Rock-n-Roll Marathon', 'Arizona Ironman'];
+---
+<section class="relative isolate overflow-hidden bg-navy-950 text-white">
+  <img src="/images/about-community.jpg" alt="Two runners jogging on a road at sunset" loading="lazy" class="absolute inset-0 -z-20 h-full w-full object-cover" />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-[#060f24]/95 via-[#0b1d42]/80 to-[#060f24]/30"></div>
+  <div class="mx-auto max-w-[1400px] px-6 py-24 lg:px-10 lg:py-40">
+    <Reveal client:visible>
+      <p class="eyebrow">In the community</p>
+      <h2 class="mt-5 max-w-2xl text-[clamp(2.2rem,5vw,4.2rem)]">There at the finish line, <em class="text-gold">and at the start.</em></h2>
+      <p class="mt-6 max-w-xl text-lg text-white/75">Dr. Stewart gives his time to athletes at big events, so runners and players get expert foot care right when they need it.</p>
+      <ul class="mt-8 flex flex-wrap gap-3">
+        {events.map((e) => <li class="border border-gold/50 px-4 py-2 text-sm text-white/90" style="border-radius:3px">{e}</li>)}
+      </ul>
+      <div class="mt-10"><Button book variant="book">Book Appointment</Button></div>
+    </Reveal>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+---
+import Reveal from '../islands/Reveal';
+import Button from '../ui/Button.astro';
+const steps = [
+  { t: 'One call to book', d: 'Friendly staff, flexible scheduling and quick appointments, often the same or next day.' },
+  { t: 'Board-certified podiatrists and surgeons', d: 'Dr. Stewart and Dr. Su work together, so your plan gets two expert opinions.' },
+  { t: 'Clear answers at your visit', d: 'Current diagnostic technology in our office helps us find the cause fast and explain it plainly.' },
+  { t: 'Simple care first', d: 'Orthotics, MLS laser therapy and other gentle options come first. Surgery is minimally invasive and only when needed.' },
+  { t: 'Follow-up that keeps you moving', d: 'Wound care, custom orthotics and easy home guidance help you stay active and pain-free.' },
+];
+---
+<section id="why" class="bg-navy-950 px-6 py-24 text-white lg:px-10 lg:py-36">
+  <div class="mx-auto grid max-w-[1400px] gap-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
+    <div class="lg:sticky lg:top-32 lg:self-start">
+      <Reveal client:visible>
+        <p class="eyebrow">Why choose us</p>
+        <h2 class="mt-5 text-[clamp(2.4rem,5vw,4.4rem)]">Your path to <em class="text-gold">comfortable steps.</em></h2>
+        <p class="mt-6 max-w-md text-lg text-white/70">From the first call to the last follow-up, here is what care feels like with us.</p>
+        <div class="mt-10"><Button book variant="book">Book Appointment</Button></div>
+      </Reveal>
+    </div>
+
+    <ol class="divide-y divide-white/15 border-y border-white/15">
+      {steps.map((s, i) => (
+        <li>
+          <Reveal client:visible>
+            <div class="group grid grid-cols-[auto_1fr] gap-6 py-9 transition-all duration-500 hover:pl-3 sm:gap-10">
+              <span class="font-serif text-5xl text-gold/60 transition-colors duration-500 group-hover:text-gold sm:text-6xl">0{i + 1}</span>
+              <div>
+                <p class="text-[11px] uppercase tracking-[0.3em] text-white/40">Step</p>
+                <h3 class="mt-1 text-[1.9rem] sm:text-[2.2rem]">{s.t}</h3>
+                <p class="mt-3 max-w-xl text-white/70">{s.d}</p>
+              </div>
+            </div>
+          </Reveal>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

@@ -1,0 +1,115 @@
+---
+import Reveal from '../islands/Reveal';
+import Button from '../ui/Button.astro';
+const signs = ['Stabbing pain near the heel with the first steps in the morning', 'Pain after sitting for a while, then standing up', 'Soreness along the arch that grows by evening', 'Pain that eases as you warm up, then returns after activity'];
+const risks = [
+  { t: 'Long hours on your feet', d: 'Standing or walking on hard floors all day strains the band under your foot.' },
+  { t: 'Running and sports', d: 'Sudden jumps in distance or speed can irritate it fast.' },
+  { t: 'Foot shape', d: 'Flat feet or very high arches change how weight moves through the foot.' },
+  { t: 'Tight calves, worn shoes', d: 'Tight calf muscles and shoes with little support add extra pull.' },
+];
+const care = [
+  { t: 'Exam and history', d: 'We look at your steps, shoes and daily routine, and press gently to find the sore spot.' },
+  { t: 'Imaging when helpful', d: 'If needed, in-office imaging rules out other causes such as a heel spur or stress injury.' },
+  { t: 'Relief you can feel', d: 'Stretching, custom orthotics, supportive shoes and MLS laser therapy calm the pain.' },
+  { t: 'Next steps if still sore', d: 'Most people improve with these. If not, we talk about more advanced options together.' },
+];
+const faqs = [
+  { q: 'How long does plantar fasciitis take to heal?', a: 'Many people feel better in a few weeks to a few months with steady care. Starting early usually helps.' },
+  { q: 'Is plantar fasciitis the same as a heel spur?', a: 'No. A heel spur is a small bony growth. It can appear along with plantar fasciitis, but the spur is often not the cause of the pain.' },
+  { q: 'Can I keep running?', a: 'Often yes, with changes. We will guide you on what is safe and how to build back slowly.' },
+  { q: 'Will I need surgery?', a: 'Rarely. The large majority of patients improve with simple care.' },
+];
+---
+<section class="bg-ivory px-6 py-24 lg:px-10 lg:py-32">
+  <div class="mx-auto grid max-w-[1400px] items-center gap-14 lg:grid-cols-[1fr_1fr] lg:gap-24">
+    <Reveal client:visible>
+      <p class="eyebrow">What it feels like</p>
+      <h2 class="mt-5 text-[clamp(2.2rem,4.6vw,3.8rem)] text-navy-900">A sore band under your foot, <em class="text-gold">and a clear way out.</em></h2>
+      <p class="mt-6 max-w-xl text-lg text-navy-900/75">The plantar fascia is a thick band that runs from your heel to your toes. When it gets irritated, every step can hurt. It is common, and it is very treatable.</p>
+      <ul class="mt-8 space-y-3">
+        {signs.map((s) => (
+          <li class="flex gap-4 border-b border-navy-900/10 pb-3 text-navy-900/80"><span class="mt-[0.7em] h-px w-6 shrink-0 bg-gold"></span>{s}</li>
+        ))}
+      </ul>
+    </Reveal>
+    <Reveal client:visible>
+      <div class="relative">
+        <div class="absolute -bottom-5 -left-5 hidden h-full w-full border border-gold/60 sm:block" style="border-radius:3px"></div>
+        <img src="/images/pf-arch-pain.jpg" alt="Woman sitting on a sofa holding the sore arch of her foot" loading="lazy" class="photo relative aspect-[4/3] w-full object-cover" />
+      </div>
+    </Reveal>
+  </div>
+</section>
+
+<section class="bg-navy-950 px-6 py-24 text-white lg:px-10 lg:py-32">
+  <div class="mx-auto max-w-[1400px]">
+    <Reveal client:visible>
+      <p class="eyebrow">Who gets it</p>
+      <h2 class="mt-5 max-w-2xl text-[clamp(2.2rem,4.6vw,3.8rem)]">Common <em class="text-gold">risk factors.</em></h2>
+    </Reveal>
+    <ul class="mt-14 grid gap-px bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
+      {risks.map((c, i) => (
+        <li class="bg-navy-950 p-8 transition-colors duration-500 hover:bg-navy-900">
+          <span class="font-serif text-4xl text-gold/70">0{i + 1}</span>
+          <h3 class="mt-4 text-2xl">{c.t}</h3>
+          <p class="mt-3 text-white/70">{c.d}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="bg-ivory px-6 py-24 lg:px-10 lg:py-32">
+  <div class="mx-auto grid max-w-[1400px] items-center gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
+    <Reveal client:visible>
+      <div class="relative">
+        <div class="absolute -bottom-5 -right-5 hidden h-full w-full border border-gold/60 sm:block" style="border-radius:3px"></div>
+        <img src="/images/pf-insole.jpg" alt="Podiatrist fitting an orthotic insole to a patient's foot" loading="lazy" class="photo relative aspect-[4/3] w-full object-cover" />
+      </div>
+    </Reveal>
+    <Reveal client:visible>
+      <p class="eyebrow">How we treat it</p>
+      <h2 class="mt-5 text-[clamp(2.2rem,4.6vw,3.8rem)] text-navy-900">Support, stretch, <em class="text-gold">and heal.</em></h2>
+      <ol class="mt-8 divide-y divide-navy-900/15 border-y border-navy-900/15">
+        {care.map((x, i) => (
+          <li class="grid grid-cols-[auto_1fr] gap-5 py-5">
+            <span class="font-serif text-3xl text-gold">0{i + 1}</span>
+            <div><h3 class="text-xl text-navy-900">{x.t}</h3><p class="mt-1 text-navy-900/70">{x.d}</p></div>
+          </li>
+        ))}
+      </ol>
+      <div class="mt-9 flex flex-wrap gap-4"><Button book variant="book-dark">Book Appointment</Button><Button href="/services/custom-orthotics" variant="outline">About orthotics</Button></div>
+    </Reveal>
+  </div>
+</section>
+
+<section class="relative isolate overflow-hidden bg-navy-950 text-white">
+  <img src="/images/pf-runner.jpg" alt="Runner sitting on a road holding the sore arch of his foot" loading="lazy" class="absolute inset-0 -z-20 h-full w-full object-cover" />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-[#060f24]/95 via-[#0b1d42]/80 to-[#060f24]/35"></div>
+  <div class="mx-auto max-w-[1400px] px-6 py-24 lg:px-10 lg:py-36">
+    <Reveal client:visible>
+      <p class="eyebrow">Back to your stride</p>
+      <h2 class="mt-5 max-w-2xl text-[clamp(2.2rem,5vw,4rem)]">Do not run through the pain. <em class="text-gold">Let us help.</em></h2>
+      <p class="mt-6 max-w-xl text-lg text-white/75">The sooner plantar fasciitis is treated, the sooner you can walk, run and work without pain.</p>
+      <div class="mt-9"><Button book variant="book">Book Appointment</Button></div>
+    </Reveal>
+  </div>
+</section>
+
+<section class="bg-ivory px-6 py-24 lg:px-10 lg:py-32">
+  <div class="mx-auto max-w-3xl">
+    <Reveal client:visible>
+      <p class="eyebrow text-center">Questions</p>
+      <h2 class="mt-5 text-center text-[clamp(2rem,4vw,3.2rem)] text-navy-900">Plantar fasciitis, <em class="text-gold">answered.</em></h2>
+    </Reveal>
+    <div class="mt-12 divide-y divide-navy-900/15 border-y border-navy-900/15">
+      {faqs.map((f) => (
+        <details class="group py-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 font-serif text-2xl text-navy-900">{f.q}<span class="text-gold transition-transform group-open:rotate-45">+</span></summary>
+          <p class="mt-3 max-w-2xl text-navy-900/70">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

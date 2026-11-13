@@ -1,0 +1,21 @@
+---
+import Reveal from '../islands/Reveal';
+const stats = [
+  { n: '1998', l: 'Caring for Chandler since' },
+  { n: '2', l: 'Board-certified podiatric surgeons' },
+  { n: 'All ages', l: 'Children, adults and athletes' },
+  { n: 'Same-week', l: 'Visits for pain and injuries' },
+];
+---
+<section class="bg-navy-900 px-6 py-16 text-white lg:px-10 lg:py-20">
+  <Reveal client:visible>
+    <ul class="mx-auto grid max-w-[1400px] grid-cols-2 gap-y-10 lg:grid-cols-4">
+      {stats.map((s, i) => (
+        <li class={`px-4 text-center lg:px-8 ${i > 0 ? 'lg:border-l lg:border-gold/30' : ''}`}>
+          <p class="font-serif text-[clamp(2rem,4vw,3.2rem)] text-gold">{s.n}</p>
+          <p class="mt-2 text-[11px] uppercase tracking-[0.25em] text-white/60">{s.l}</p>
+        </li>
+      ))}
+    </ul>
+  </Reveal>
+</section>

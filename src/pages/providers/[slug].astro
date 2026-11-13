@@ -1,0 +1,122 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Reveal from '../../components/islands/Reveal';
+import Button from '../../components/ui/Button.astro';
+import Contact from '../../components/home/Contact.astro';
+import { providers } from '../../data/site';
+import { conditions } from '../../data/conditions';
+
+export function getStaticPaths() {
+  return providers.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props;
+const other = providers.find((x) => x.slug !== p.slug)!;
+const last = p.name.replace(/, DPM$/, '').split(' ').slice(-1)[0];
+
+const extra: Record<string, { facts: { n: string; l: string }[]; treats: string[]; life: string }> = {
+  'alex-stewart': {
+    facts: [
+      { n: '10 years', l: 'In private practice in Arizona' },
+      { n: '24/7', l: 'Emergency care for sports injuries and trauma' },
+      { n: 'Teaching', l: 'Helps train podiatrists at the Carl T. Hayden VAMC residency, Phoenix' },
+    ],
+    treats: ['ankle-sprains', 'tendonitis-and-tears', 'diabetic-neuropathy', 'foot-ulcers'],
+    life: 'Dr. Stewart is a former college baseball player and loves golf. He volunteers at local sports events, so he knows how much a healthy foot matters to an athlete.',
+  },
+  'antonius-su': {
+    facts: [
+      { n: '1998', l: 'Founded the practice in Chandler' },
+      { n: 'Board-certified', l: 'In foot surgery' },
+      { n: 'Air Force', l: 'Cared for U.S. Air Force members after surgical residency' },
+    ],
+    treats: ['bunions', 'ingrown-toenails', 'flat-feet', 'heel-spurs'],
+    life: 'Dr. Su lives in Chandler with his wife and three children. His goal is simple: keep your feet healthy so you can live every day to the fullest.',
+  },
+};
+const e = extra[p.slug];
+const treats = conditions.filter((c) => e.treats.includes(c.slug));
+const paragraphs = p.bio.split(/(?<=\.)\s+(?=[A-Z])/);
+const groups: string[] = [];
+paragraphs.forEach((s, i) => { if (i % 2 === 0) groups.push(s); else groups[groups.length - 1] += ' ' + s; });
+---
+<PageLayout title={p.name} eyebrow={p.role} lede={p.short} image="/images/about-story.jpg" description={`${p.name}, ${p.role}, at Advanced Foot & Ankle Specialists in Chandler, AZ. ${p.short}`}>
+  <section class="bg-ivory px-6 py-24 lg:px-10 lg:py-32">
+    <div class="mx-auto grid max-w-[1400px] items-start gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
+      <Reveal client:visible>
+        <div class="relative lg:sticky lg:top-32">
+          <div class="absolute -bottom-5 -right-5 hidden h-full w-full border border-gold/60 sm:block" style="border-radius:3px"></div>
+          <img src={p.img} alt={p.name} loading="eager" class="photo relative aspect-[4/5] w-full object-cover object-[50%_12%]" />
+        </div>
+      </Reveal>
+      <Reveal client:visible>
+        <p class="eyebrow">About Dr. {last}</p>
+        <h2 class="mt-5 text-[clamp(2.2rem,4.6vw,3.8rem)] text-navy-900">{p.role.split(' · ')[0]}, <em class="text-gold">here for you.</em></h2>
+        <p class="mt-5 text-xs uppercase tracking-[0.2em] text-navy-900/55">{p.creds}</p>
+        <div class="mt-8 max-w-2xl space-y-5 text-lg text-navy-900/75">
+          {groups.map((t) => <p>{t}</p>)}
+        </div>
+        <ul class="mt-8 flex flex-wrap gap-2">
+          {p.focus.map((f) => <li class="border border-navy-900/25 px-4 py-2 text-sm text-navy-900/80" style="border-radius:3px">{f}</li>)}
+        </ul>
+        <div class="mt-10 flex flex-wrap gap-4"><Button book variant="book-dark">Book with Dr. {last}</Button><Button href="tel:4809639000" variant="outline">Call 480-963-9000</Button></div>
+      </Reveal>
+    </div>
+  </section>
+
+  <section class="bg-navy-900 px-6 py-16 text-white lg:px-10 lg:py-20">
+    <Reveal client:visible>
+      <ul class="mx-auto grid max-w-[1400px] gap-10 md:grid-cols-3">
+        {e.facts.map((f, i) => (
+          <li class={`px-4 text-center md:px-8 ${i > 0 ? 'md:border-l md:border-gold/30' : ''}`}>
+            <p class="font-serif text-[clamp(2rem,3.6vw,3rem)] text-gold">{f.n}</p>
+            <p class="mx-auto mt-2 max-w-[16rem] text-[11px] uppercase leading-relaxed tracking-[0.2em] text-white/60">{f.l}</p>
+          </li>
+        ))}
+      </ul>
+    </Reveal>
+  </section>
+
+  <section class="bg-ivory px-6 py-24 lg:px-10 lg:py-32">
+    <div class="mx-auto max-w-[1400px]">
+      <Reveal client:visible>
+        <p class="eyebrow">What Dr. {last} treats</p>
+        <h2 class="mt-5 max-w-2xl text-[clamp(2.2rem,4.6vw,3.8rem)] text-navy-900">Common reasons patients <em class="text-gold">come to see him.</em></h2>
+      </Reveal>
+      <ul class="mt-12 grid gap-px bg-navy-900/15 sm:grid-cols-2 lg:grid-cols-4">
+        {treats.map((c, i) => (
+          <li class="bg-ivory">
+            <a href={`/conditions/${c.slug}`} class="group block h-full p-8 transition-colors duration-500 hover:bg-navy-900 hover:text-white">
+              <span class="font-serif text-4xl text-gold/70">0{i + 1}</span>
+              <h3 class="mt-4 text-2xl">{c.title}</h3>
+              <p class="mt-3 text-[15px] text-navy-900/65 group-hover:text-white/70">{c.summary}</p>
+              <span class="mt-5 inline-block text-[11px] uppercase tracking-[0.25em] text-gold">Learn more →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="relative isolate overflow-hidden bg-navy-950 text-white">
+    <img src="/images/about-community.jpg" alt="" loading="lazy" class="absolute inset-0 -z-20 h-full w-full object-cover" />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-[#060f24]/95 via-[#0b1d42]/85 to-[#060f24]/50"></div>
+    <div class="mx-auto max-w-[1400px] px-6 py-24 lg:px-10 lg:py-32">
+      <Reveal client:visible>
+        <p class="eyebrow">Beyond the clinic</p>
+        <p class="mt-6 max-w-2xl font-serif text-[clamp(1.6rem,3vw,2.4rem)] leading-snug">{e.life}</p>
+        <div class="mt-9"><Button book variant="book">Book Appointment</Button></div>
+      </Reveal>
+    </div>
+  </section>
+
+  <section class="bg-ivory px-6 py-20 lg:px-10">
+    <Reveal client:visible>
+      <a href={`/providers/${other.slug}`} class="group mx-auto grid max-w-[1000px] grid-cols-[88px_1fr_auto] items-center gap-6 border border-navy-900/15 p-5 transition-colors duration-500 hover:border-gold" style="border-radius:3px">
+        <img src={other.img} alt={other.name} loading="lazy" class="photo aspect-square w-[88px] object-cover object-[50%_12%]" />
+        <div><p class="eyebrow">Also on our team</p><p class="mt-1 font-serif text-2xl text-navy-900">{other.name}</p><p class="text-sm text-navy-900/60">{other.role}</p></div>
+        <span class="text-gold transition-transform duration-500 group-hover:translate-x-1">→</span>
+      </a>
+    </Reveal>
+  </section>
+  <Contact />
+</PageLayout>

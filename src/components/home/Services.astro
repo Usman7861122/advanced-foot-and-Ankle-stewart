@@ -1,0 +1,27 @@
+---
+import FlipCards from '../islands/FlipCards';
+import Button from '../ui/Button.astro';
+import Reveal from '../islands/Reveal';
+import { featured } from '../../data/services';
+---
+<section id="services" class="bg-navy-900 px-6 py-24 text-white lg:px-10 lg:py-36">
+  <div class="mx-auto max-w-[1400px]">
+    <Reveal client:visible>
+      <div class="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+        <div class="max-w-2xl">
+          <p class="eyebrow">Featured services</p>
+          <h2 class="mt-5 text-[clamp(2.4rem,5vw,4.4rem)]">Expert care, <em class="text-gold">top to toe.</em></h2>
+        </div>
+        <p class="max-w-md text-white/70">Hover or tap a card to see how we can help. We always start with the simplest effective care.</p>
+      </div>
+    </Reveal>
+
+    <div class="mt-16">
+      <FlipCards client:visible cards={featured} />
+    </div>
+
+    <div class="mt-14 text-center">
+      <Button href="/services" variant="outline">View all 19 services</Button>
+    </div>
+  </div>
+</section>

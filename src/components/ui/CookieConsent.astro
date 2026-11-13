@@ -1,0 +1,63 @@
+---
+// Customizable cookie consent. Choice is saved in localStorage ("afas-consent").
+// Other scripts can listen for the "consent-change" event on window.
+---
+<div id="ck-banner" role="dialog" aria-modal="false" aria-labelledby="ck-title" hidden
+  class="fixed inset-x-3 bottom-[68px] z-[60] max-w-md border border-gold/40 bg-navy-950 p-6 text-white shadow-2xl md:bottom-6 md:left-6 md:right-auto"
+  style="border-radius:3px">
+  <p id="ck-title" class="font-serif text-2xl">Your privacy choices</p>
+  <p class="mt-2 text-sm leading-relaxed text-white/75">We use cookies to run this site. With your OK, we also use them to learn how the site is used and to improve it. You can change your mind at any time. <a href="/cookie-policy" class="underline decoration-gold underline-offset-4">Cookie Policy</a></p>
+  <div id="ck-main" class="mt-5 flex flex-wrap gap-3">
+    <button type="button" data-ck="all" class="btn bg-gold px-5 py-3 text-xs uppercase tracking-[0.16em] text-navy-950" style="border-radius:3px">Accept all</button>
+    <button type="button" data-ck="none" class="btn btn-outline px-5 py-3 text-xs uppercase tracking-[0.16em]">Reject non-essential</button>
+    <button type="button" data-ck="custom" class="w-full pt-1 text-left text-xs uppercase tracking-[0.16em] text-gold underline underline-offset-4">Customize</button>
+  </div>
+  <form id="ck-form" hidden class="mt-5 space-y-4 border-t border-white/15 pt-5">
+    <label class="flex items-start justify-between gap-4 text-sm"><span><strong class="block font-medium">Necessary</strong><span class="text-white/65">Keeps the site working. Always on.</span></span><input type="checkbox" checked disabled class="mt-1 h-5 w-5 accent-[#c9a96e]" /></label>
+    <label class="flex items-start justify-between gap-4 text-sm"><span><strong class="block font-medium">Analytics</strong><span class="text-white/65">Counts visits so we can improve pages.</span></span><input type="checkbox" name="analytics" class="mt-1 h-5 w-5 accent-[#c9a96e]" /></label>
+    <label class="flex items-start justify-between gap-4 text-sm"><span><strong class="block font-medium">Marketing</strong><span class="text-white/65">Helps show our ads to the right people.</span></span><input type="checkbox" name="marketing" class="mt-1 h-5 w-5 accent-[#c9a96e]" /></label>
+    <button type="submit" class="btn bg-gold px-5 py-3 text-xs uppercase tracking-[0.16em] text-navy-950" style="border-radius:3px">Save my choices</button>
+  </form>
+</div>
+<script is:inline>
+  (function () {
+    var KEY = 'afas-consent';
+    var box = document.getElementById('ck-banner');
+    if (!box) return;
+    var form = document.getElementById('ck-form');
+    var main = document.getElementById('ck-main');
+    function read() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } }
+    function save(a, m) {
+      var v = { necessary: true, analytics: !!a, marketing: !!m, ts: Date.now() };
+      try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) {}
+      window.consent = v;
+      window.dispatchEvent(new CustomEvent('consent-change', { detail: v }));
+      box.hidden = true;
+    }
+    function open(customize) {
+      var c = read() || {};
+      form.analytics.checked = !!c.analytics;
+      form.marketing.checked = !!c.marketing;
+      form.hidden = !customize;
+      main.hidden = !!customize;
+      box.hidden = false;
+      var f = box.querySelector(customize ? 'input[name=analytics]' : '[data-ck=all]');
+      if (f) f.focus();
+    }
+    window.consent = read();
+    if (!window.consent) open(false);
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-ck]'); if (!b) return;
+      var k = b.getAttribute('data-ck');
+      if (k === 'all') save(true, true);
+      else if (k === 'none') save(false, false);
+      else open(true);
+    });
+    form.addEventListener('submit', function (e) { e.preventDefault(); save(form.analytics.checked, form.marketing.checked); });
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-cookie-settings]');
+      if (t) { e.preventDefault(); open(true); }
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden && read()) box.hidden = true; });
+  })();
+</script>

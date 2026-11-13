@@ -1,0 +1,19 @@
+---
+// Adds a gold "Today" tag to the matching hours row (Arizona time, no daylight saving).
+---
+<script is:inline>
+  (function () {
+    var names = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    var d = names[new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'America/Phoenix' }).format(new Date())];
+    document.querySelectorAll('[data-days]').forEach(function (row) {
+      var days = row.getAttribute('data-days').split(',').map(Number);
+      if (days.indexOf(d) === -1) return;
+      row.classList.add('is-today');
+      var tag = document.createElement('span');
+      tag.textContent = 'Today';
+      tag.className = 'ml-3 rounded-[3px] border border-gold/60 px-2 py-0.5 align-middle text-[10px] uppercase tracking-[0.2em] text-gold';
+      row.firstElementChild.appendChild(tag);
+      row.firstElementChild.classList.add('font-medium');
+    });
+  })();
+</script>

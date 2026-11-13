@@ -1,0 +1,58 @@
+---
+import Reveal from '../islands/Reveal';
+import Button from '../ui/Button.astro';
+import { providers } from '../../data/site';
+const first = (n: string) => `Dr. ${n.split(',')[0].split(' ').slice(-1)[0]}`;
+---
+<section id="providers" class="bg-ivory px-6 py-24 lg:px-10 lg:py-36">
+  <div class="mx-auto max-w-[1400px]">
+    <Reveal client:visible>
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="eyebrow">Our providers</p>
+        <h2 class="mt-5 text-[clamp(2.4rem,5vw,4.4rem)]">Meet your <em class="text-gold">care team.</em></h2>
+        <p class="mt-5 text-lg text-navy-900/70">Two board-certified podiatrists and surgeons who plan your care together.</p>
+      </div>
+    </Reveal>
+
+    <div class="mx-auto mt-16 grid max-w-[1040px] gap-8 md:grid-cols-2 lg:gap-10">
+      {providers.map((p, n) => (
+        <Reveal client:visible>
+          <article class="provider group relative aspect-[4/5] overflow-hidden rounded-[3px] bg-navy-900 text-white">
+            <img
+              src={p.img}
+              alt={`Portrait of ${p.name}`}
+              loading="lazy"
+              width="1024"
+              height="1536"
+              class="absolute inset-0 h-full w-full object-cover object-[50%_12%] transition-transform duration-[1400ms] ease-[cubic-bezier(.2,.7,.2,1)] group-hover:scale-[1.06] group-focus-within:scale-[1.06]"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/35 to-transparent transition-opacity duration-700 group-hover:opacity-0 group-focus-within:opacity-0"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/80 to-navy-900/20 opacity-100 md:opacity-0 transition-opacity duration-700 md:group-hover:opacity-100 md:group-focus-within:opacity-100"></div>
+            <span class="absolute left-0 top-0 h-px w-0 bg-gold transition-all duration-1000 group-hover:w-full"></span>
+            <span class="absolute right-0 top-0 h-0 w-px bg-gold transition-all duration-1000 delay-300 group-hover:h-full"></span>
+            <span class="absolute right-0 bottom-0 h-px w-0 bg-gold transition-all duration-1000 delay-500 group-hover:w-full"></span>
+            <span class="absolute left-0 bottom-0 h-0 w-px bg-gold transition-all duration-1000 delay-700 group-hover:h-full"></span>
+
+            <span class="absolute left-7 top-6 text-xs tracking-[0.3em] text-gold">0{n + 1}</span>
+
+            <div class="absolute inset-x-0 bottom-0 p-7 lg:p-9">
+              <p class="eyebrow">{p.role}</p>
+              <h3 class="mt-3 text-[clamp(2rem,3vw,2.8rem)] leading-tight">{p.name}</h3>
+              <div class="hairline my-4 w-12 transition-all duration-700 group-hover:w-28"></div>
+              <div class="grid grid-rows-[1fr] transition-[grid-template-rows] duration-700 ease-out md:grid-rows-[0fr] md:group-hover:grid-rows-[1fr] md:group-focus-within:grid-rows-[1fr]">
+                <div class="overflow-hidden">
+                  <p class="text-[15px] leading-relaxed text-white/85">{p.short}</p>
+                  <p class="mt-3 text-xs uppercase tracking-[0.18em] text-white/55">{p.creds}</p>
+                  <ul class="mt-4 flex flex-wrap gap-2">
+                    {p.focus.map((f) => <li class="rounded-[4px] border border-white/30 px-3 py-1 text-[11px] tracking-wide text-white/85">{f}</li>)}
+                  </ul>
+                  <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 pb-1"><Button book class="!min-h-[44px] !text-[12px]">Book with {first(p.name)}</Button><a href={`/providers/${p.slug}`} class="link-line text-[12px] uppercase tracking-[0.2em] text-white/80">Full profile →</a></div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>
